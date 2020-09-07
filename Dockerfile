@@ -17,3 +17,5 @@ RUN git clone http://www.github.com/irtizak/titanic.git
 RUN /bin/bash -c 'cd titanic \
     && source activate titanic \
     && pip install -r requirements.txt'
+
+RUN streamlit run app/app.py
