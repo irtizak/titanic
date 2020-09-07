@@ -14,8 +14,6 @@ RUN conda create -y -n titanic python=3.8
 
 RUN git clone http://www.github.com/irtizak/titanic.git
 
-RUN /bin/bash -c 'conda init \
-    && conda activate titanic \
-    && pip install -r titanic\requirements.txt'
-
-RUN streamlit run titanic/app/app.py
+RUN /bin/bash -c 'cd titanic \
+    && source activate titanic \
+    && pip install -r requirements.txt'
