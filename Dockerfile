@@ -1,18 +1,21 @@
-FROM python:3.8
+FROM ubuntu:18.04
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
 
-RUN pip install virtualenv
-ENV VIRTUAL_ENV=/venv
-RUN virtualenv venv -p python3
-ENV PATH="VIRTUAL_ENV/bin:$PATH"
+RUN apt update \
+    && apt install -y git python3-dev wget
 
-WORKDIR /app
-ADD . /app
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && mkdir root/.conda \
+    && sh Miniconda3-latest-Linux-x86_64.sh -b \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh
 
-# Install dependencies
-RUN pip install -r requirements.txt
+RUN conda create -y -n titanic python=3.8
 
-# Expose port 
-EXPOSE 5000
+RUN git clone http://www.github.com/irtizak/titanic.git
 
-# Run the application:
-CMD ["streamlit", "run", "app.py"]
+RUN /bin/bash -c 'conda init \
+    && conda activate titanic \
+    && pip install -r titanic\requirements.txt'
+
+RUN streamlit run titanic/app/app.py
