@@ -1,0 +1,5 @@
+# Build docker file
+docker build -f Dockerfile -t docker_titanic .
+
+# Run docker container
+docker run -ti docker_titanic /bin/bash
