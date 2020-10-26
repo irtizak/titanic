@@ -20,4 +20,6 @@ RUN conda init bash
 
 RUN /bin/bash -c "source activate titanic"
 
+EXPOSE 5000
+
 CMD python titanic/ml_api/api/app.py
