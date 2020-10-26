@@ -1,21 +1,23 @@
 FROM ubuntu:18.04
+
 ENV PATH="/root/miniconda3/bin:${PATH}"
 ARG PATH="/root/miniconda3/bin:${PATH}"
 
 RUN apt update \
-    && apt install -y git python3-dev wget
+    && apt install -y wget git
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && mkdir root/.conda \
-    && sh Miniconda3-latest-Linux-x86_64.sh -b \
-    && rm -f Miniconda3-latest-Linux-x86_64.sh
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    mkdir root/.conda && \
+    sh Miniconda3-latest-Linux-x86_64.sh -b && \
+    rm -f Miniconda3-latest-Linux-x86_64.sh
 
-RUN conda create -y -n titanic python=3.8
+RUN git clone http://www.github.com/irtizak/titanic && \
+    conda create --name titanic --file titanic/requirements1.txt && \
+    conda install flask -y && \
+    pip install flask_restful numpy joblib
 
-RUN git clone http://www.github.com/irtizak/titanic.git
+RUN conda init bash
 
-RUN /bin/bash -c 'cd titanic \
-    && source activate titanic \
-    && pip install -r requirements.txt'
+RUN /bin/bash -c "source activate titanic"
 
-RUN streamlit run app/app.py
+CMD python titanic/ml_api/api/app.py
