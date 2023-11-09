@@ -1,0 +1,3 @@
+Ticket and Cabin might have some insight that can be used
+Can replace Nans in Embarked with something, only 2 values
+Age is being dropped, but can do imputatino and leverage it
